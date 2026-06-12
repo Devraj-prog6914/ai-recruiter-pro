@@ -4,6 +4,8 @@ import { AuthRequest } from '../middleware/auth';
 import { parseResumeText } from '../services/aiService';
 import pdfParse from 'pdf-parse';
 
+import fs from 'fs';
+
 export const uploadResume = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.file) {
@@ -14,18 +16,23 @@ export const uploadResume = async (req: AuthRequest, res: Response) => {
     const email = req.body.email || 'unknown@example.com';
     const phone = req.body.phone || '';
 
-    // Parse PDF
-    const pdfData = await pdfParse(req.file.buffer);
+    // Parse PDF from disk
+    const dataBuffer = fs.readFileSync(req.file.path);
+    const pdfData = await pdfParse(dataBuffer);
     const resumeText = pdfData.text;
 
     // AI Extraction
     const extractedData = await parseResumeText(resumeText);
+    
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const resumeUrl = `${baseUrl}/uploads/${req.file.filename}`;
 
     const newCandidate = new Candidate({
       name,
       email,
       phone,
       resumeText,
+      resumeUrl,
       ...extractedData
     });
 

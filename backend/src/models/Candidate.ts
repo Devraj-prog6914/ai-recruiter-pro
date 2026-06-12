@@ -20,6 +20,7 @@ export interface ICandidate extends Document {
 
   // The raw parsed text
   resumeText: string;
+  resumeUrl?: string;
   
   createdAt: Date;
 }
@@ -41,6 +42,7 @@ const CandidateSchema: Schema = new Schema({
   linkedinLink: { type: String },
   
   resumeText: { type: String, required: true },
+  resumeUrl: { type: String },
   
   createdAt: { type: Date, default: Date.now },
 });

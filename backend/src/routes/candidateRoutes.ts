@@ -4,7 +4,18 @@ import { uploadResume, getCandidates, getCandidateById } from '../controllers/ca
 import { auth } from '../middleware/auth';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+import path from 'path';
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../uploads'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.pdf');
+  }
+});
+const upload = multer({ storage });
 
 router.post('/upload', auth, upload.single('resume'), uploadResume);
 router.get('/', auth, getCandidates);

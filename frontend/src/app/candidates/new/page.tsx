@@ -25,7 +25,6 @@ export default function AddCandidatePage() {
     setLoading(true);
     
     const formData = new FormData(e.currentTarget);
-    formData.append('resume', file);
     
     // Clean up empty optional fields
     if (!formData.get('name')) formData.delete('name');
@@ -105,9 +104,9 @@ export default function AddCandidatePage() {
               <div className="text-center relative z-10">
                 <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
                 <div className="mt-4 flex text-sm leading-6 text-muted-foreground justify-center">
-                  <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-semibold text-primary focus-within:outline-none hover:underline">
+                  <label htmlFor="resume" className="relative cursor-pointer rounded-md font-semibold text-primary focus-within:outline-none hover:underline">
                     <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" accept=".pdf" className="sr-only" required onChange={handleFileChange} />
+                    <input id="resume" name="resume" type="file" accept=".pdf" className="sr-only" required onChange={handleFileChange} />
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>

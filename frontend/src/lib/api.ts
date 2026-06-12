@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_BASE_URL,
 });
 
 let tokenPromise: Promise<string | null> | null = null;
@@ -14,7 +16,7 @@ export const authenticate = async () => {
 
   tokenPromise = (async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
+      const res = await axios.post(`${API_BASE_URL}/auth/login`, {
         email: 'admin@ai-recruiter.com',
         password: 'password123'
       });
@@ -22,7 +24,7 @@ export const authenticate = async () => {
       return token;
     } catch (error) {
       try {
-        const res = await axios.post('http://localhost:5000/api/auth/register', {
+        const res = await axios.post(`${API_BASE_URL}/auth/register`, {
           name: 'Admin Recruiter',
           email: 'admin@ai-recruiter.com',
           password: 'password123',
